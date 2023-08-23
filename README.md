@@ -1,1 +1,1 @@
-# a simple Registration form
+# A simple Registration form
