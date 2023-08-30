@@ -5,9 +5,6 @@ const port = 3000;
 const path = require('path');
 const userRoutes = require('./user'); // 導入 user.js 模組
 
-// 靜態文件中間件
-app.use(express.static(path.join(__dirname, 'public')));
-
 // 建立與資料庫的連線
 const db = mysql.createConnection({
   host: 'localhost',
@@ -27,6 +24,9 @@ db.connect(err => {
 
 // 使用 JSON 解析中間件
 app.use(express.json());
+//new one
+app.use(express.urlencoded());
+app.use(express.static('public'));
 
 // 使用 userRoutes 模組處理用戶相關路由
 app.use('/', userRoutes);

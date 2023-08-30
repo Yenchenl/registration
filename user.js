@@ -20,7 +20,7 @@ db.connect(err => {
 });
 
 // 處理註冊請求
-router.post('/register', (req, res) => {
+router.post('/formPost', (req, res) => {
   const { firstname, lastname, email, newpassword } = req.body;
   console.log(req.body);
   
