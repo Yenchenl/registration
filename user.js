@@ -31,7 +31,7 @@ db.connect(err => {
   }
 });
 
-
+// sending email with nodemailer and gmail api
 async function sendMail(tomailer, name) {
   try {
       const accessToken = await oAuth2Client.getAccessToken()
@@ -72,7 +72,7 @@ router.post('/formPost', (req, res) => {
 
   //const inputemail = 'a109222048@mail.shu.edu.tw';
   var results = [];
-
+  // checking email isn't registered
   db.connect(function(err) {
   if (err) throw err;
   db.query("SELECT * FROM users WHERE email = ?", [email], function (err, result, fields) {
@@ -99,6 +99,17 @@ router.post('/formPost', (req, res) => {
     }
     });
   });
+});
+
+// data view with login form 
+router.get('/profile', (req, res, next) => {
+	User.findOne({ unique_id: req.session.userId }, (err, data) => {
+		if (!data) {
+			res.redirect('/');
+		} else {
+			return res.render('data.ejs', { "name": data.username, "email": data.email });
+		}
+	});
 });
 
 module.exports = router;
