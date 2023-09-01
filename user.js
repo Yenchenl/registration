@@ -69,20 +69,35 @@ router.post('/formPost', (req, res) => {
   const { firstname, lastname, email, newpassword } = req.body;
   console.log(req.body);
   console.log(email);
-  sendMail(email, firstname)
-    .then((result) => console.log('Email sent...', result))
-    .catch((error) => console.log(error.message));
 
-  // 插入資料到資料庫
-  const query = 'INSERT INTO users (firstname, lastname, email, newpassword) VALUES (?, ?, ?, ?)';
-  db.query(query, [firstname, lastname, email, newpassword], (err, result) => {
-    if (err) {
-      console.error('資料庫操作失敗：', err);
-      res.status(500).json({ message: '註冊失敗' });
-    } else {
-      console.log('註冊成功');
-      res.json({ message: '註冊成功' });
+  //const inputemail = 'a109222048@mail.shu.edu.tw';
+  var results = [];
+
+  db.connect(function(err) {
+  if (err) throw err;
+  db.query("SELECT * FROM users WHERE email = ?", [email], function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+    if (result.length > 0){
+      console.log("已經有帳號了，請輸入原有帳號");
+      res.json({ message: '已經有帳號了，請輸入原有帳號' });}
+    else{
+      sendMail(email, firstname)
+      .then((result) => console.log('Email sent...', result))
+      .catch((error) => console.log(error.message));  
+      // 插入資料到資料庫
+      const query = 'INSERT INTO users (firstname, lastname, email, newpassword) VALUES (?, ?, ?, ?)';
+      db.query(query, [firstname, lastname, email, newpassword], (err, result) => {
+      if (err) {
+        console.error('資料庫操作失敗：', err);
+        res.status(500).json({ message: '註冊失敗' });
+      } else {
+        console.log('註冊成功');
+        res.json({ message: '註冊成功' });
+      }
+    });
     }
+    });
   });
 });
 
