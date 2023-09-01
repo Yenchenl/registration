@@ -101,15 +101,15 @@ router.post('/formPost', (req, res) => {
   });
 });
 
-// data view with login form 
-router.get('/profile', (req, res, next) => {
-	User.findOne({ unique_id: req.session.userId }, (err, data) => {
-		if (!data) {
-			res.redirect('/');
-		} else {
-			return res.render('data.ejs', { "name": data.username, "email": data.email });
-		}
-	});
-});
+// // data view with login form 
+// router.get('/profile', (req, res, next) => {
+// 	User.findOne({ unique_id: req.session.userId }, (err, data) => {
+// 		if (!data) {
+// 			res.redirect('/');
+// 		} else {
+// 			return res.render('data.ejs', { "name": data.username, "email": data.email });
+// 		}
+// 	});
+// });
 
 module.exports = router;
