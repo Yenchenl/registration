@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2');
 
+const app = express();
+
 const nodeMailer = require('nodemailer'); // use for mailing
 const {google} = require('googleapis'); // get the google oauth
 
@@ -101,15 +103,48 @@ router.post('/formPost', (req, res) => {
   });
 });
 
-// // data view with login form 
-// router.get('/profile', (req, res, next) => {
-// 	User.findOne({ unique_id: req.session.userId }, (err, data) => {
-// 		if (!data) {
-// 			res.redirect('/');
-// 		} else {
-// 			return res.render('data.ejs', { "name": data.username, "email": data.email });
-// 		}
-// 	});
-// });
+router.post('/loginPost', (req, res) => {
+  const { inemail, inpassword } = req.body;
+  // console.log(req.body);
+  // console.log(inemail);
+
+  // 查询数据库以检查是否存在具有给定电子邮件和密码的用户
+  const query = 'SELECT email, firstname FROM users WHERE email = ? AND newpassword = ?';
+  db.query(query, [inemail, inpassword], (err, result) => {
+    if (err) {
+      console.error('資料庫查詢錯誤：', err);
+      res.status(500).json({ message: '資料庫錯誤' });
+    } else if (result.length === 0) {
+      // 未找到匹配的用户
+      res.status(404).json({ message: '未找到用戶或帳號密碼不正確' });
+    } else {
+      // 找到用户，您可以继续登录逻辑
+      // 找到用户，您可以继续登录逻辑
+      const user = result[0];
+      console.log('找到用户：', user);
+      // 您可以在这里创建会话或JWT进行身份验证
+      // res.json({ message: '登录成功', user });
+
+      const responseHtml = `
+        <html>
+        <head>
+          <link rel="stylesheet" href="./public/styles.css" />
+          <title>Login Success</title>
+        </head>
+        <body>
+          <h1>Login Sucess</h1>
+          <p>Hello there, welcome to my website</p>
+          <p>Your email: ${user.email}</p>
+          <p>Your name: ${user.firstname}</p>
+        </body>
+       </html>
+  
+      `;
+
+      // 发送 HTML 响应
+      res.send(responseHtml);
+    }
+  });
+});
 
 module.exports = router;
