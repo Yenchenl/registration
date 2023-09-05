@@ -8,20 +8,20 @@ const nodeMailer = require('nodemailer'); // use for mailing
 const {google} = require('googleapis'); // get the google oauth
 
 // set the required, the refresh token has to refresh by "google oauth playground"
-const CLIENT_ID = '419975539241-k9bm6mfnspdahahapsntu14o2ke0meja.apps.googleusercontent.com';
-const CLIENT_SECRET = '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';
-const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
-const REFRESH_TOKEN = '1//042lLF8HdSWZoCgYIARAAGAQSNwF-L9IrMs7GalN3W7uGU6N2pAdfW7UK2aG7F_hV4sKK8d0oZjsIbJb1Z02VJ4AMpVcv0EStxF8';
+const CLIENT_ID = 'your client id';
+const CLIENT_SECRET = 'your client secret';
+const REDIRECT_URI = 'your redirect uri';
+const REFRESH_TOKEN = 'your refresh token';
 
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN})
 
 // 建立與資料庫的連線
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
+  host: 'your host',
+  user: 'user',
   password: 'password',
-  database: 'member'
+  database: 'database'
 });
 
 // 測試資料庫連線
@@ -42,7 +42,7 @@ async function sendMail(tomailer, name) {
           service: 'gmail',
           auth: {
               type: 'OAuth2',
-              user: '71614dennis@gmail.com',
+              user: 'example@email',
               clientId: CLIENT_ID,
               clientSecret: CLIENT_SECRET,
               refreshToken: REFRESH_TOKEN,
@@ -51,7 +51,7 @@ async function sendMail(tomailer, name) {
       })
 
       const mailOptions = {
-          from: '71614DENNIS<71614dennis@gmail.com>',
+          from: 'example<example@com>',
           to: tomailer,
           subject: 'Thank you for your using',
           text: 'Thank you for using the registration system,'+name,
