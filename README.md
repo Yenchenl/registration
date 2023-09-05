@@ -1,5 +1,6 @@
 # Simple Registration System
 <h1><img alt="tldr-pages" src="img/login_page.png" width=600/></h1>
+<h1><img alt="tldr-pages" src="img/regis.png" width=600/></h1>
 
 ## Description
 這是一個簡單的登入註冊系統，旨在讓使用者註冊並登入的應用程式。這個系統由以下主要組件組成：
